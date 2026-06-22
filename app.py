@@ -27,10 +27,20 @@ from tkinter import ttk, filedialog, messagebox
 # Lógica (sem interface) — facilita testes                                    #
 # --------------------------------------------------------------------------- #
 
+def obter_pasta_base():
+    """Retorna a pasta onde devem ser gravados config.json e o log.
+
+    Quando empacotado com PyInstaller (--onefile), usa a pasta do executável,
+    pois o __file__ aponta para uma pasta temporária que é apagada ao fechar.
+    """
+    if getattr(sys, "frozen", False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__)) if "__file__" in globals() else os.getcwd()
+
+
 def obter_caminho_config():
     """Retorna o caminho do arquivo de configuração config.json."""
-    base_dir = os.path.dirname(os.path.abspath(__file__)) if "__file__" in globals() else os.getcwd()
-    return os.path.join(base_dir, "config.json")
+    return os.path.join(obter_pasta_base(), "config.json")
 
 
 def carregar_config():
@@ -57,8 +67,7 @@ def salvar_config(config):
 
 def obter_caminho_log():
     """Retorna o caminho do arquivo de log log_exportacao.txt."""
-    base_dir = os.path.dirname(os.path.abspath(__file__)) if "__file__" in globals() else os.getcwd()
-    return os.path.join(base_dir, "log_exportacao.txt")
+    return os.path.join(obter_pasta_base(), "log_exportacao.txt")
 
 
 def registrar_log(xml_origem, destino, sucessos, falhas):
