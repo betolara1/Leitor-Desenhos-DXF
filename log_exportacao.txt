@@ -1,0 +1,224 @@
+=======================================================================
+DATA/HORA: 22/06/2026 14:31:52
+XML DE ORIGEM: C:/Users/Ralf/Desktop/68397a__QUEILA_VIANA_Projeto_SALA_KIDS.xml
+PASTA DE DESTINO: C:/Users/Ralf/Desktop/Desenhos-teste
+QUANTIDADE EXPORTADA (SUCESSO): 187
+QUANTIDADE COM FALHA: 25
+
+DESENHOS EXPORTADOS COM SUCESSO:
+  - TES00000053A.dxf
+  - TES00000052A.dxf
+  - TES00000051A.dxf
+  - ESP00004626A.dxf
+  - EST00000644A.dxf
+  - EST00000643A.dxf
+  - EST00000642A.dxf
+  - 3_T00000083A.dxf
+  - EST00000620A.dxf
+  - EST00000619A.dxf
+  - LAT00128246A.dxf
+  - 3_T00000082A.dxf
+  - EST00000618A.dxf
+  - EST00000617A.dxf
+  - LAT00128245A.dxf
+  - 3_T00000081A.dxf
+  - EST00000616A.dxf
+  - EST00000615A.dxf
+  - LAT00128244A.dxf
+  - 3_T00000080A.dxf
+  - EST00000614A.dxf
+  - EST00000613A.dxf
+  - LAT00128243A.dxf
+  - 3_T00000079A.dxf
+  - EST00000612A.dxf
+  - EST00000611A.dxf
+  - LAT00128242A.dxf
+  - TES00000047A.dxf
+  - TES00000046A.dxf
+  - TES00000045A.dxf
+  - TES00000044A.dxf
+  - EST00000638A.dxf
+  - EST00000637A.dxf
+  - EST00000636A.dxf
+  - TES00000043A.dxf
+  - TES00000042A.dxf
+  - TES00000041A.dxf
+  - TES00000040A.dxf
+  - TES00000039A.dxf
+  - EST00000635A.dxf
+  - EST00000634A.dxf
+  - EST00000633A.dxf
+  - TES00000038A.dxf
+  - TES00000037A.dxf
+  - TES00000036A.dxf
+  - TES00000035A.dxf
+  - EST00000632A.dxf
+  - EST00000631A.dxf
+  - EST00000630A.dxf
+  - TES00000034A.dxf
+  - TES00000033A.dxf
+  - TES00000032A.dxf
+  - TES00000031A.dxf
+  - TES00000030A.dxf
+  - EST00000629A.dxf
+  - EST00000628A.dxf
+  - EST00000627A.dxf
+  - TES00000029A.dxf
+  - TES00000028A.dxf
+  - TES00000027A.dxf
+  - TES00000026A.dxf
+  - EST00000626A.dxf
+  - EST00000625A.dxf
+  - EST00000624A.dxf
+  - 3_T00000078A.dxf
+  - EST00000595A.dxf
+  - EST00000594A.dxf
+  - LAT00128241A.dxf
+  - 3_T00000077A.dxf
+  - EST00000593A.dxf
+  - EST00000592A.dxf
+  - LAT00128240A.dxf
+  - 3_T00000076A.dxf
+  - EST00000591A.dxf
+  - EST00000590A.dxf
+  - LAT00128239A.dxf
+  - 3_T00000075A.dxf
+  - EST00000589A.dxf
+  - EST00000588A.dxf
+  - LAT00128238A.dxf
+  - 3_T00000074A.dxf
+  - EST00000587A.dxf
+  - EST00000586A.dxf
+  - LAT00128237A.dxf
+  - RIP00091893A.dxf
+  - RIP00091892A.dxf
+  - RIP00091891A.dxf
+  - RIP00091890A.dxf
+  - RIP00091889A.dxf
+  - RIP00091888A.dxf
+  - RIP00091887A.dxf
+  - RIP00091886A.dxf
+  - RIP00091885A.dxf
+  - RIP00091884A.dxf
+  - RIP00091883A.dxf
+  - RIP00091882A.dxf
+  - RIP00091881A.dxf
+  - RIP00091880A.dxf
+  - RIP00091879A.dxf
+  - RIP00091878A.dxf
+  - RIP00091877A.dxf
+  - RIP00091876A.dxf
+  - RIP00091875A.dxf
+  - RIP00091874A.dxf
+  - RIP00091873A.dxf
+  - RIP00091872A.dxf
+  - RIP00091871A.dxf
+  - RIP00091870A.dxf
+  - RIP00091869A.dxf
+  - RIP00091868A.dxf
+  - RIP00091867A.dxf
+  - RIP00091866A.dxf
+  - RIP00091865A.dxf
+  - RIP00091864A.dxf
+  - PAL00000632A.dxf
+  - PAL00000631A.dxf
+  - FRE00034963A.dxf
+  - CO_00061312A.dxf
+  - CO_00061311A.dxf
+  - LAT00128235A.dxf
+  - FRE00034962A.dxf
+  - LAT00128234A.dxf
+  - LAT00128233A.dxf
+  - TAM00063140A.dxf
+  - TAM00063139A.dxf
+  - CO_00061310A.dxf
+  - CO_00061309A.dxf
+  - LAT00128232A.dxf
+  - FRE00034961A.dxf
+  - LAT00128231A.dxf
+  - LAT00128230A.dxf
+  - TAM00063138A.dxf
+  - TAM00063137A.dxf
+  - CO_00061308A.dxf
+  - CO_00061307A.dxf
+  - LAT00128229A.dxf
+  - LAT00128228A.dxf
+  - LAT00128227A.dxf
+  - TAM00063136A.dxf
+  - TAM00063135A.dxf
+  - PAL00000630A.dxf
+  - PAL00000629A.dxf
+  - PAL00000628A.dxf
+  - PAL00000627A.dxf
+  - CO_00061306A.dxf
+  - CO_00061305A.dxf
+  - LAT00128217A.dxf
+  - FRE00034960A.dxf
+  - LAT00128216A.dxf
+  - LAT00128215A.dxf
+  - TAM00063134A.dxf
+  - TAM00063133A.dxf
+  - POR00049257A.dxf
+  - POR00049256A.dxf
+  - FRE00034959A.dxf
+  - CO_00061304A.dxf
+  - CO_00061303A.dxf
+  - LAT00128214A.dxf
+  - FRE00034958A.dxf
+  - CO_00061302A.dxf
+  - CO_00061301A.dxf
+  - LAT00128213A.dxf
+  - FRE00034957A.dxf
+  - CO_00061300A.dxf
+  - CO_00061299A.dxf
+  - LAT00128212A.dxf
+  - TRA00049871A.dxf
+  - TRA00049870A.dxf
+  - TRA00049869A.dxf
+  - TRA00049868A.dxf
+  - TRA00049867A.dxf
+  - TAM00063132A.dxf
+  - TAM00063131A.dxf
+  - TAM00063130A.dxf
+  - TAM00063129A.dxf
+  - TAM00063128A.dxf
+  - DIV00003808A.dxf
+  - TRA00049866A.dxf
+  - LAT00128211A.dxf
+  - DIV00003807A.dxf
+  - TRA00049865A.dxf
+  - TRA00049864A.dxf
+  - DIV00003806A.dxf
+  - TRA00049863A.dxf
+  - TRA00049862A.dxf
+  - LAT00128210A.dxf
+  - PRA00081823A.dxf
+
+DESENHOS COM FALHA:
+  - 'ESP00004625A': arquivo não encontrado na pasta de busca.
+  - 'ESP00004624A': arquivo não encontrado na pasta de busca.
+  - 'ESP00004623A': arquivo não encontrado na pasta de busca.
+  - 'ESP00004622A': arquivo não encontrado na pasta de busca.
+  - 'ESP00004621A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078465A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078464A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078463A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078462A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078461A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078460A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078459A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078458A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078457A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078456A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078455A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078454A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078453A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078452A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078451A': arquivo não encontrado na pasta de busca.
+  - 'FUN00078450A': arquivo não encontrado na pasta de busca.
+  - 'HOR00010759A': arquivo não encontrado na pasta de busca.
+  - 'HOR00010758A': arquivo não encontrado na pasta de busca.
+  - 'HOR00010757A': arquivo não encontrado na pasta de busca.
+  - 'HOR00010756A': arquivo não encontrado na pasta de busca.
+
+=======================================================================
