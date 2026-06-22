@@ -34,14 +34,17 @@ arquitetura lógica/UI desacoplada.
 ## 🧠 Como funciona (passo a passo)
 
 1. **Leitura do XML** — o usuário abre um arquivo XML do projeto.
-2. **Extração dos desenhos** — o programa varre todas as tags dentro de blocos
-   `<ESTRUTURA>` e coleta o valor do atributo `DESENHO="..."` de cada item, junto
-   com a `REFERENCIA` daquele mesmo item.
-3. **Aplicação das regras de filtro** (função `_desenho_permitido`):
-   - Desenhos que começam com **`FUN`** → **nunca aparecem**.
-   - Desenhos que começam com **`LIN`** → só aparecem se a `REFERENCIA` do item
-     estiver na lista de referências permitidas (`REFERENCIAS_LIN_PERMITIDAS`).
-   - Qualquer outro desenho → **sempre aparece**.
+2. **Extração dos desenhos** — o programa varre todas as tags:
+   - **Dentro de blocos `<ESTRUTURA>`**: coleta o valor do atributo `DESENHO="..."` de cada item, junto com a `REFERENCIA` daquele mesmo item.
+   - **Fora de blocos `<ESTRUTURA>` (desenhos pai)**: coleta os valores de `DESENHO="..."` apenas se o desenho começar com **`ESP`**, ou se começar com **`ES0`** e a `REFERENCIA` daquele item também começar com **`ES0`**.
+3. **Aplicação das regras de filtro**:
+   - **Dentro de `<ESTRUTURA>`** (função `_desenho_permitido`):
+     - Desenhos que começam com **`FUN`** → **nunca aparecem**.
+     - Desenhos que começam com **`LIN`** → só aparecem se a `REFERENCIA` do item estiver na lista de referências permitidas (`REFERENCIAS_LIN_PERMITIDAS`).
+     - Qualquer outro desenho → **sempre aparece**.
+   - **Fora de `<ESTRUTURA>` (desenhos pai)**:
+     - Desenhos que começam com **`ESP`** → **sempre aparecem**.
+     - Desenhos que começam com **`ES0`** → aparecem apenas se a `REFERENCIA` do item também começar com **`ES0`**.
 4. **Remoção de duplicatas** preservando a ordem de aparição.
 5. **Lista na tela** — o usuário pode filtrar por texto, abrir a pasta do desenho,
    copiar um desenho ou copiar todos os filtrados de uma vez.
@@ -119,9 +122,7 @@ Confira se a *pasta de busca* aponta para o local correto e se o arquivo existe
 com o mesmo nome do código de desenho (a extensão pode ser diferente).
 
 **Abri um XML e a lista veio vazia ou menor que o esperado.**
-Lembre-se das regras de filtro: desenhos `FUN` são sempre ocultados e desenhos
-`LIN` só aparecem para as referências permitidas. Ajuste
-`REFERENCIAS_LIN_PERMITIDAS` se necessário.
+Lembre-se das regras de filtro: desenhos `FUN` são sempre ocultados, desenhos `LIN` só aparecem para as referências permitidas (conforme `REFERENCIAS_LIN_PERMITIDAS`), e desenhos pai (fora de `<ESTRUTURA>`) só são exibidos se iniciarem com `ESP`, ou com `ES0` (contanto que sua `REFERENCIA` também inicie com `ES0`).
 
 **Funciona no macOS/Linux?**
 A lógica é multiplataforma e o app abre, mas o fluxo foi desenhado e testado para

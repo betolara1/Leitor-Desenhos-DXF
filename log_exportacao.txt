@@ -222,3 +222,88 @@ DESENHOS COM FALHA:
   - 'HOR00010756A': arquivo não encontrado na pasta de busca.
 
 =======================================================================
+=======================================================================
+DATA/HORA: 22/06/2026 17:30:19
+XML DE ORIGEM: C:/Users/Ralf/Desktop/erro/68397a__QUEILA_VIANA_Projeto_SALA_KIDS.xml
+PASTA DE DESTINO: C:/Users/Ralf/Desktop/Desenhos-teste
+QUANTIDADE EXPORTADA (SUCESSO): 24
+QUANTIDADE COM FALHA: 0
+
+DESENHOS EXPORTADOS COM SUCESSO:
+  - ESP00004599A.dxf
+  - ESP00004598A.dxf
+  - ESP00004597A.dxf
+  - ESP00004596A.dxf
+  - ESP00004595A.dxf
+  - ESP00004594A.dxf
+  - ESP00004593A.dxf
+  - ESP00004592A.dxf
+  - ESP00004591A.dxf
+  - ESP00004590A.dxf
+  - ESP00004589A.dxf
+  - ESP00004583A.dxf
+  - ESP00004582A.dxf
+  - ESP00004581A.dxf
+  - ESP00004580A.dxf
+  - ESP00004579A.dxf
+  - ESP00004578A.dxf
+  - ESP00004577A.dxf
+  - ESP00004576A.dxf
+  - ESP00004575A.dxf
+  - ESP00004574A.dxf
+  - ESP00004573A.dxf
+  - ESP00004572A.dxf
+  - ESP00004571A.dxf
+
+=======================================================================
+=======================================================================
+DATA/HORA: 22/06/2026 17:34:46
+XML DE ORIGEM: C:/Users/Ralf/Desktop/erro/68397a__QUEILA_VIANA_Projeto_SALA_KIDS.xml
+PASTA DE DESTINO: C:/Users/Ralf/Desktop/Desenhos-teste
+QUANTIDADE EXPORTADA (SUCESSO): 34
+QUANTIDADE COM FALHA: 5
+
+DESENHOS EXPORTADOS COM SUCESSO:
+  - ESP00004626A.dxf
+  - ESP00004609A.dxf
+  - ESP00004607A.dxf
+  - ESP00004606A.dxf
+  - ESP00004605A.dxf
+  - ESP00004604A.dxf
+  - ESP00004603A.dxf
+  - ESP00004602A.dxf
+  - ESP00004601A.dxf
+  - ESP00004600A.dxf
+  - ESP00004599A.dxf
+  - ESP00004598A.dxf
+  - ESP00004597A.dxf
+  - ESP00004596A.dxf
+  - ESP00004595A.dxf
+  - ESP00004594A.dxf
+  - ESP00004593A.dxf
+  - ESP00004592A.dxf
+  - ESP00004591A.dxf
+  - ESP00004590A.dxf
+  - ESP00004589A.dxf
+  - ESP00004583A.dxf
+  - ESP00004582A.dxf
+  - ESP00004581A.dxf
+  - ESP00004580A.dxf
+  - ESP00004579A.dxf
+  - ESP00004578A.dxf
+  - ESP00004577A.dxf
+  - ESP00004576A.dxf
+  - ESP00004575A.dxf
+  - ESP00004574A.dxf
+  - ESP00004573A.dxf
+  - ESP00004572A.dxf
+  - ESP00004571A.dxf
+
+DESENHOS COM FALHA:
+  - 'ESP00004625A': arquivo não encontrado na pasta de busca.
+  - 'ESP00004624A': arquivo não encontrado na pasta de busca.
+  - 'ESP00004623A': arquivo não encontrado na pasta de busca.
+  - 'ESP00004622A': arquivo não encontrado na pasta de busca.
+  - 'ESP00004621A': arquivo não encontrado na pasta de busca.
+
+=======================================================================

@@ -151,7 +151,8 @@ def _atributos_de(trecho):
 
 
 def extrair_desenhos_do_texto(texto):
-    """Extrai todos os valores de desenho="..." que estejam dentro de <ESTRUTURA> de um texto XML.
+    """Extrai todos os valores de desenho="..." que estejam dentro de <ESTRUTURA> de um texto XML,
+    e também desenhos fora de <ESTRUTURA> (pai) se começarem com ESP ou com ES0 (quando a REFERENCIA começa com ES0).
 
     Funciona mesmo se o XML estiver levemente malformado, pois usa regex
     como fallback. Retorna lista preservando a ordem e sem duplicatas.
@@ -164,13 +165,29 @@ def extrair_desenhos_do_texto(texto):
     # 1) Tenta o parser de XML de verdade
     try:
         root = ET.fromstring(texto)
+        elementos_na_estrutura = set()
         for elem in root.iter():
             if elem.tag.upper() == "ESTRUTURA":
                 for child in elem.iter():
-                    attrs = {k.lower(): v for k, v in child.attrib.items()}
-                    desenho = attrs.get("desenho")
-                    if desenho and _desenho_permitido(desenho, attrs.get("referencia")):
-                        valores.append(desenho.strip())
+                    elementos_na_estrutura.add(child)
+
+        for elem in root.iter():
+            attrs = {k.lower(): v for k, v in elem.attrib.items()}
+            desenho = attrs.get("desenho")
+            if not desenho:
+                continue
+
+            if elem in elementos_na_estrutura:
+                if _desenho_permitido(desenho, attrs.get("referencia")):
+                    valores.append(desenho.strip())
+            else:
+                # Desenhos pai (fora da ESTRUTURA)
+                desenho_upper = desenho.strip().upper()
+                ref_upper = attrs.get("referencia", "").strip().upper()
+                if desenho_upper.startswith("ESP"):
+                    valores.append(desenho.strip())
+                elif desenho_upper.startswith("ES0") and ref_upper.startswith("ES0"):
+                    valores.append(desenho.strip())
     except ET.ParseError:
         pass
 
@@ -187,10 +204,25 @@ def extrair_desenhos_do_texto(texto):
             elif not autofecha:
                 depth += 1
             continue
-        if depth > 0 and not fechamento:
-            attrs = _atributos_de(corpo)
-            desenho = attrs.get("desenho")
-            if desenho and _desenho_permitido(desenho, attrs.get("referencia")):
+        
+        if fechamento:
+            continue
+            
+        attrs = _atributos_de(corpo)
+        desenho = attrs.get("desenho")
+        if not desenho:
+            continue
+
+        if depth > 0:
+            if _desenho_permitido(desenho, attrs.get("referencia")):
+                valores.append(desenho.strip())
+        else:
+            # Desenhos pai (fora da ESTRUTURA)
+            desenho_upper = desenho.strip().upper()
+            ref_upper = attrs.get("referencia", "").strip().upper()
+            if desenho_upper.startswith("ESP"):
+                valores.append(desenho.strip())
+            elif desenho_upper.startswith("ES0") and ref_upper.startswith("ES0"):
                 valores.append(desenho.strip())
 
     # Remove duplicatas preservando ordem
