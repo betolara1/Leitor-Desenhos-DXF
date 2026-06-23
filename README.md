@@ -39,9 +39,9 @@ arquitetura lógica/UI desacoplada.
    - **Fora de blocos `<ESTRUTURA>` (desenhos pai)**: coleta os valores de `DESENHO="..."` apenas se o desenho começar com **`ESP`**, ou se começar com **`ES0`** e a `REFERENCIA` daquele item também começar com **`ES0`**.
 3. **Aplicação das regras de filtro**:
    - **Dentro de `<ESTRUTURA>`** (função `_desenho_permitido`):
-     - Desenhos que começam com **`FUN`** → **nunca aparecem**.
-     - Desenhos que começam com **`LIN`** → só aparecem se a `REFERENCIA` do item estiver na lista de referências permitidas (`REFERENCIAS_LIN_PERMITIDAS`).
-     - Qualquer outro desenho → **sempre aparece**.
+      - Desenhos que começam com **`FUN`** ou **`HOR`** → **nunca aparecem** (pois não vão para corte).
+      - Desenhos que começam com **`LIN`** → só aparecem se a `REFERENCIA` do item estiver na lista de referências permitidas (`REFERENCIAS_LIN_PERMITIDAS`).
+      - Qualquer outro desenho → **sempre aparece**.
    - **Fora de `<ESTRUTURA>` (desenhos pai)**:
      - Desenhos que começam com **`ESP`** → **sempre aparecem**.
      - Desenhos que começam com **`ES0`** → aparecem apenas se a `REFERENCIA` do item também começar com **`ES0`**.
@@ -96,6 +96,7 @@ REFERENCIAS_LIN_PERMITIDAS = {"LN001173", "LN000023"}  # adicione/remova código
 - **Copiar desenho** → copia o desenho selecionado para a pasta de destino.
 - **Copiar todos (filtrados)** → copia de uma vez todos os desenhos que estão na
   lista no momento.
+- **Comparar pasta...** → permite selecionar uma pasta qualquer do computador para verificar quais desenhos do XML existem ou estão ausentes nela. Abre uma tela de análise detalhada que exibe um sumário, abas de encontrados/ausentes, botão de cópia de nomes ausentes e exportação de relatório `.txt`.
 
 ### 6. Conferir o que foi exportado
 - Clique em **Abrir log de exportação** para ver o histórico (data/hora, projeto

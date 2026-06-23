@@ -128,13 +128,13 @@ REFERENCIAS_LIN_PERMITIDAS = {"LN001173", "LN000023"}
 def _desenho_permitido(desenho, referencia):
     """Decide se um desenho deve aparecer na lista.
 
-    Desenhos cujo nome começa com "FUN" nunca são permitidos.
+    Desenhos cujo nome começa com "FUN" ou "HOR" nunca são permitidos.
     Desenhos cujo nome começa com "LIN" só são permitidos quando a REFERENCIA
     do item for uma das referências em REFERENCIAS_LIN_PERMITIDAS. Qualquer
     outro desenho é sempre permitido.
     """
     desenho_upper = desenho.strip().upper()
-    if desenho_upper.startswith("FUN"):
+    if desenho_upper.startswith("FUN") or desenho_upper.startswith("HOR"):
         return False
     if desenho_upper.startswith("LIN"):
         return (referencia or "").strip().upper() in REFERENCIAS_LIN_PERMITIDAS
@@ -278,6 +278,61 @@ def localizar_arquivo_desenho(nome_desenho, pasta_busca):
     return candidato_base
 
 
+def mapear_pasta_arquivos(pasta):
+    """Varre a pasta recursivamente e mapeia os arquivos por nome base (minúsculo)
+    e por nome completo (minúsculo) para busca rápida.
+    Retorna dois dicionários: {nome_base_l: caminho} e {nome_completo_l: caminho}.
+    """
+    mapa_base = {}
+    mapa_completo = {}
+    
+    if not pasta or not os.path.isdir(pasta):
+        return mapa_base, mapa_completo
+        
+    for raiz, _dirs, arquivos in os.walk(pasta):
+        for arq in arquivos:
+            arq_l = arq.lower()
+            if arq_l.endswith(".bak"):
+                continue
+            
+            caminho_completo = os.path.join(raiz, arq)
+            # Mapa do nome completo
+            if arq_l not in mapa_completo:
+                mapa_completo[arq_l] = caminho_completo
+                
+            # Mapa do nome base (sem extensão)
+            base_arq_l = os.path.splitext(arq)[0].lower()
+            
+            # Prioriza DXF se houver duplicatas de nome base
+            if base_arq_l not in mapa_base:
+                mapa_base[base_arq_l] = caminho_completo
+            else:
+                # Se já existe mas o novo é dxf, sobrescreve para dar prioridade ao dxf
+                if arq_l.endswith(".dxf"):
+                    mapa_base[base_arq_l] = caminho_completo
+                    
+    return mapa_base, mapa_completo
+
+
+def buscar_em_mapa(nome_desenho, mapa_base, mapa_completo):
+    """Procura um desenho no mapa de busca em O(1) reproduzindo a mesma prioridade
+    de localizar_arquivo_desenho (exato > base_dxf > base_outros)."""
+    nome_alvo = nome_desenho.strip()
+    base_alvo, ext_alvo = os.path.splitext(nome_alvo)
+    base_alvo_l = base_alvo.lower()
+    nome_alvo_l = nome_alvo.lower()
+    
+    # 1. Correspondência exata se tiver extensão
+    if ext_alvo and nome_alvo_l in mapa_completo:
+        return mapa_completo[nome_alvo_l]
+        
+    # 2. Correspondência por nome base
+    if base_alvo_l in mapa_base:
+        return mapa_base[base_alvo_l]
+        
+    return None
+
+
 def abrir_pasta_com_arquivo(caminho):
     """Abre o gerenciador de arquivos na pasta do caminho informado.
     No Windows, seleciona o arquivo. Em macOS/Linux abre a pasta.
@@ -377,6 +432,7 @@ class LeitorDesenhosApp:
         ttk.Button(frm_btn, text="Abrir pasta do desenho", command=self._abrir_pasta_do_desenho).pack(side="left")
         ttk.Button(frm_btn, text="Copiar desenho", command=self._copiar_desenho).pack(side="left", padx=6)
         ttk.Button(frm_btn, text="Copiar todos (filtrados)", command=self._copiar_todos).pack(side="left")
+        ttk.Button(frm_btn, text="Comparar pasta...", command=self._comparar_pasta).pack(side="left", padx=6)
         ttk.Button(frm_btn, text="Abrir log de exportação", command=self._abrir_log).pack(side="right")
 
         # Barra de status
@@ -536,6 +592,179 @@ class LeitorDesenhosApp:
             abrir_arquivo(caminho_log)
         else:
             messagebox.showinfo("Aviso", "Nenhum log de exportação foi gerado ainda.")
+
+    def _comparar_pasta(self):
+        if not self.todos_desenhos:
+            messagebox.showwarning("Atenção", "Nenhum desenho carregado. Abra um XML primeiro.")
+            return
+
+        pasta = filedialog.askdirectory(title="Selecione a pasta para comparação")
+        if not pasta:
+            return
+
+        self.status.set("Indexando arquivos...")
+        self.root.update_idletasks()
+
+        try:
+            mapa_base, mapa_completo = mapear_pasta_arquivos(pasta)
+        except Exception as e:
+            messagebox.showerror("Erro ao ler pasta", f"Erro: {e}")
+            self.status.set("Erro ao indexar pasta.")
+            return
+
+        self.status.set("Analisando existência...")
+        self.root.update_idletasks()
+
+        encontrados = []
+        ausentes = []
+        for d in self.todos_desenhos:
+            caminho = buscar_em_mapa(d, mapa_base, mapa_completo)
+            if caminho:
+                encontrados.append((d, caminho))
+            else:
+                ausentes.append(d)
+
+        self.status.set(f"Comparação concluída: {len(encontrados)} encontrados, {len(ausentes)} ausentes.")
+
+        # Criar janela modal de resultados
+        win = tk.Toplevel(self.root)
+        win.title("Resultado da Comparação")
+        win.geometry("680x500")
+        win.minsize(550, 400)
+        win.transient(self.root)
+        win.grab_set()
+
+        # Adicionar padding interno
+        frm_main = ttk.Frame(win, padding=10)
+        frm_main.pack(fill="both", expand=True)
+
+        # Informações da pasta
+        lbl_pasta = ttk.Label(frm_main, text=f"Pasta analisada: {pasta}", font=("TkDefaultFont", 9, "bold"), wraplength=600)
+        lbl_pasta.pack(fill="x", anchor="w", pady=(0, 10))
+
+        # Sumário
+        frm_sumario = ttk.LabelFrame(frm_main, text="Sumário", padding=8)
+        frm_sumario.pack(fill="x", pady=(0, 10))
+
+        # Grid de informações
+        col_pad = {"padx": 15, "pady": 4}
+        lbl_tot = ttk.Label(frm_sumario, text=f"Total no XML: {len(self.todos_desenhos)}", font=("TkDefaultFont", 10, "bold"))
+        lbl_tot.grid(row=0, column=0, sticky="w", **col_pad)
+
+        lbl_enc = ttk.Label(frm_sumario, text=f"Encontrados: {len(encontrados)}", font=("TkDefaultFont", 10, "bold"), foreground="green")
+        lbl_enc.grid(row=0, column=1, sticky="w", **col_pad)
+
+        lbl_aus = ttk.Label(frm_sumario, text=f"Ausentes: {len(ausentes)}", font=("TkDefaultFont", 10, "bold"), foreground="red" if ausentes else "darkgreen")
+        lbl_aus.grid(row=0, column=2, sticky="w", **col_pad)
+
+        # Notebook (Abas)
+        notebook = ttk.Notebook(frm_main)
+        notebook.pack(fill="both", expand=True, pady=(0, 10))
+
+        # Aba 1: Ausentes
+        tab_ausentes = ttk.Frame(notebook)
+        notebook.add(tab_ausentes, text=f"Ausentes ({len(ausentes)})")
+
+        if ausentes:
+            list_aus = tk.Listbox(tab_ausentes, selectmode="extended")
+            list_aus.pack(side="left", fill="both", expand=True, padx=4, pady=4)
+            scroll_aus = ttk.Scrollbar(tab_ausentes, orient="vertical", command=list_aus.yview)
+            scroll_aus.pack(side="right", fill="y", pady=4)
+            list_aus.config(yscrollcommand=scroll_aus.set)
+            
+            for item in ausentes:
+                list_aus.insert(tk.END, item)
+        else:
+            lbl_ok = ttk.Label(tab_ausentes, text="🎉 Todos os desenhos estão presentes nesta pasta!", font=("TkDefaultFont", 11, "italic"), anchor="center")
+            lbl_ok.pack(fill="both", expand=True)
+
+        # Aba 2: Encontrados
+        tab_encontrados = ttk.Frame(notebook)
+        notebook.add(tab_encontrados, text=f"Encontrados ({len(encontrados)})")
+
+        if encontrados:
+            # Treeview para mostrar Desenho e Caminho do Arquivo
+            cols = ("desenho", "caminho")
+            tree_enc = ttk.Treeview(tab_encontrados, columns=cols, show="headings", selectmode="browse")
+            tree_enc.heading("desenho", text="Desenho")
+            tree_enc.heading("caminho", text="Caminho do Arquivo Encontrado")
+            tree_enc.column("desenho", width=150, anchor="w")
+            tree_enc.column("caminho", width=400, anchor="w")
+            
+            tree_enc.pack(side="left", fill="both", expand=True, padx=4, pady=4)
+            
+            scroll_enc = ttk.Scrollbar(tab_encontrados, orient="vertical", command=tree_enc.yview)
+            scroll_enc.pack(side="right", fill="y", pady=4)
+            tree_enc.config(yscrollcommand=scroll_enc.set)
+            
+            for d, cam in encontrados:
+                tree_enc.insert("", tk.END, values=(d, cam))
+        else:
+            lbl_nok = ttk.Label(tab_encontrados, text="Nenhum desenho do XML foi encontrado nesta pasta.", font=("TkDefaultFont", 11, "italic"), anchor="center")
+            lbl_nok.pack(fill="both", expand=True)
+
+        # Ações na parte inferior
+        frm_acoes = ttk.Frame(win, padding=10)
+        frm_acoes.pack(fill="x", side="bottom")
+
+        def copiar_ausentes():
+            if not ausentes:
+                messagebox.showinfo("Aviso", "Nenhum desenho ausente para copiar.")
+                return
+            win.clipboard_clear()
+            win.clipboard_append("\n".join(ausentes))
+            messagebox.showinfo("Copiado", "Lista de desenhos ausentes copiada para a área de transferência.")
+
+        def exportar_relatorio():
+            caminho_salvar = filedialog.asksaveasfilename(
+                title="Salvar Relatório de Comparação",
+                defaultextension=".txt",
+                filetypes=[("Arquivos de Texto", "*.txt")],
+                initialfile="relatorio_comparacao.txt"
+            )
+            if not caminho_salvar:
+                return
+            try:
+                with open(caminho_salvar, "w", encoding="utf-8") as f:
+                    f.write("=======================================================================\n")
+                    f.write("RELATÓRIO DE COMPARAÇÃO DE EXISTÊNCIA DE DESENHOS\n")
+                    f.write(f"DATA/HORA: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}\n")
+                    f.write(f"XML DE ORIGEM: {self.arquivo_xml.get()}\n")
+                    f.write(f"PASTA DE COMPARAÇÃO: {pasta}\n")
+                    f.write("=======================================================================\n\n")
+                    
+                    f.write(f"SUMÁRIO:\n")
+                    f.write(f"  - Total de desenhos no XML: {len(self.todos_desenhos)}\n")
+                    f.write(f"  - Desenhos encontrados: {len(encontrados)}\n")
+                    f.write(f"  - Desenhos ausentes: {len(ausentes)}\n\n")
+                    
+                    f.write("=======================================================================\n")
+                    f.write(f"DESENHOS AUSENTES ({len(ausentes)}):\n")
+                    f.write("=======================================================================\n")
+                    if ausentes:
+                        for item in ausentes:
+                            f.write(f"  - {item}\n")
+                    else:
+                        f.write("  (Nenhum desenho ausente)\n")
+                    f.write("\n")
+                    
+                    f.write("=======================================================================\n")
+                    f.write(f"DESENHOS ENCONTRADOS ({len(encontrados)}):\n")
+                    f.write("=======================================================================\n")
+                    if encontrados:
+                        for d, cam in encontrados:
+                            f.write(f"  - {d} -> {cam}\n")
+                    else:
+                        f.write("  (Nenhum desenho encontrado)\n")
+                        
+                messagebox.showinfo("Sucesso", f"Relatório exportado com sucesso para:\n{caminho_salvar}")
+            except Exception as ex:
+                messagebox.showerror("Erro ao exportar", f"Não foi possível salvar o relatório:\n{ex}")
+
+        # Botões do rodapé da modal
+        ttk.Button(frm_acoes, text="Copiar Nomes dos Ausentes", command=copiar_ausentes).pack(side="left")
+        ttk.Button(frm_acoes, text="Exportar Relatório (.txt)", command=exportar_relatorio).pack(side="left", padx=8)
+        ttk.Button(frm_acoes, text="Fechar", command=win.destroy).pack(side="right")
 
     def _salvar_config(self):
         config = {
